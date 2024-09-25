@@ -8,6 +8,11 @@
 -Sign up Form
 -Form validation
 -useRef Hook
+-Firebase setup
+-Deploying our app to production
+-Create SignUp user account
+-Implementing sign in user API
+-created Redux store with userslice
 # Features
 -login/sign ip
     -sign in/sign up form

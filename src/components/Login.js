@@ -1,16 +1,61 @@
 import React, { useRef, useState } from 'react';
 import Header from "./Header";
 import { checkValidData } from '../utils/validate';
+import {createUserWithEmailAndPassword,signInWithEmailAndPassword, updateProfile  } from "firebase/auth";
+import {auth} from '../utils/firebase'
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const [isSignInForm,setisSignInForm]= useState(true);
     const [errorMessage,setErrorMessage]=useState();
+    const navigate = useNavigate();
+    const name= useRef(null);
     const email= useRef(null);
     const password= useRef(null);
     const handleButtonClick=() => {
       //validate the form data
       const message= checkValidData(email.current.value,password.current.value);
       setErrorMessage(message);
-    }
+      if(message) return;
+      if(!isSignInForm){
+        //Sign up logic
+        createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    updateProfile(user, {
+        displayName: name.current.value , photoURL: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fprofile%2520picture%2F&psig=AOvVaw1eRjHP9YhqetrQ0HdKtEEM&ust=1727359261457000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJD5sOeh3ogDFQAAAAAdAAAAABAJ",
+      }).then(() => {
+        navigate("/browse");
+      }).catch((error) => {
+       setErrorMessage(error.message);
+      });
+
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setErrorMessage(errorCode + "-" + errorMessage);    // ..
+  });
+      }
+      else{
+        //sign inn logic
+        signInWithEmailAndPassword(auth,email.current.value, password.current.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user);
+    navigate("/browse");
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setErrorMessage(errorCode + "-" + errorMessage);
+  });
+
+      }
+    };
     const toggleSignInForm=() =>{
         setisSignInForm(!isSignInForm);
     }
@@ -33,4 +78,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;
