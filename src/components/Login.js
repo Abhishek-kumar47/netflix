@@ -4,10 +4,14 @@ import { checkValidData } from '../utils/validate';
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword, updateProfile  } from "firebase/auth";
 import {auth} from '../utils/firebase'
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 const Login = () => {
     const [isSignInForm,setisSignInForm]= useState(true);
     const [errorMessage,setErrorMessage]=useState();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const name= useRef(null);
     const email= useRef(null);
     const password= useRef(null);
@@ -23,8 +27,10 @@ const Login = () => {
     // Signed up 
     const user = userCredential.user;
     updateProfile(user, {
-        displayName: name.current.value , photoURL: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fprofile%2520picture%2F&psig=AOvVaw1eRjHP9YhqetrQ0HdKtEEM&ust=1727359261457000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJD5sOeh3ogDFQAAAAAdAAAAABAJ",
+        displayName: name.current.value , photoURL: "https://avatars.githubusercontent.com/u/168272830?v=4",
       }).then(() => {
+        const {uid, email, displayName, photoURL} = auth.currentUser;
+        dispatch(addUser({uid: uid, email: email, displayName: displayName, photoURL: photoURL}));
         navigate("/browse");
       }).catch((error) => {
        setErrorMessage(error.message);
