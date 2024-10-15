@@ -7,7 +7,6 @@ const MainContainer = () => {
     const movies = useSelector(store=> store.movies?.nowPlayingMovies)
     if(movies === null) return;    //or you can write if(!movies) return; ,this is the convention which is mostly used.
     const mainMovie= movies[0];
-    console.log(mainMovie);
     const {original_title, overview} = mainMovie;
   return (
     <div>
@@ -17,4 +16,4 @@ const MainContainer = () => {
   )
 }
 
-export default MainContainer
+export default MainContainer;
