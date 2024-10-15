@@ -30,9 +30,9 @@ const Header = () => {
       dispatch(removeUser()); 
       navigate("/"); 
     }
-    });
     return () => unsubscribe(); // unsubscribe when component unmount  //..
-  })
+  });
+},[]);
 
 
   return (
