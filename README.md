@@ -34,7 +34,7 @@
 - Build Movies Cards
 - TMDB image CDN URL
 - Made the browser better using tailwind CSS
-- usePopelarMovies custom hook
+- usePopularMovies custom hook
 # Features
 -login/sign ip
     -sign in/sign up form
