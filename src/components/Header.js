@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { LOGO, SUPPORTED_LANGUAGES } from "../utils/constants";
 import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../utils/userSlice";
-import { toggleGptSearchView } from "../utils/gptSlice";
 import { changeLanguage } from "../utils/configSlice";
+import { deleteMovies, toggleGeminiSearchView } from "../utils/GeminiSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
-  const showgptSearch = useSelector((store) => store.gpt.showgptSearch);
-
+  const geminiSearch = useSelector((store) => store.gemini?.showGeminiSearch);
+  
   // State for the selected language
   const [selectedLanguage, setSelectedLanguage] = useState("");
 
@@ -48,7 +48,8 @@ const Header = () => {
   }, []);
 
   const handleGptSearch = () => {
-    dispatch(toggleGptSearchView());
+    dispatch(toggleGeminiSearchView());
+    dispatch(deleteMovies());
   };
 
   const handleLanguageChange = (e) => {
@@ -63,35 +64,14 @@ const Header = () => {
       {user && (
         <div className="flex items-center">
           {/* Dropdown for language selection */}
-          {showgptSearch && (
-            <select
-              className="p-2 m-2 bg-white/20 text-white rounded-md border border-white/30 shadow-lg backdrop-blur-md hover:bg-white/30 focus:outline-none transition duration-300"
-              onChange={handleLanguageChange}
-              value={selectedLanguage}
-            >
-              {selectedLanguage === "" && (
-                <option disabled value="">
-                  Select Language
-                </option>
-              )}
-              {SUPPORTED_LANGUAGES.map((lang) => (
-                <option
-                  key={lang.identifier}
-                  value={lang.identifier}
-                  className="bg-white text-black"
-                >
-                  {lang.name}
-                </option>
-              ))}
-            </select>
-          )}
+
 
           {/* Button to toggle dropdown */}
           <button
             className="px-4 py-2 m-2 text-white bg-white/20 backdrop-blur-md rounded-md border border-white/30 shadow-lg hover:bg-white/30 transition duration-300"
             onClick={handleGptSearch}
           >
-            {showgptSearch ? "Home" : "Search"}
+            {geminiSearch ? "Home" : "Search"}
           </button>
 
           {/* Sign Out Button */}

@@ -14,3 +14,5 @@ export const API_OPTIONS = {
     { identifier: "hindi", name: "Hindi" },
     { identifier: "spanish", name: "Spanish" },
   ];
+export const API_KEY_GEMINI =process.env.REACT_APP_GEMINI_API;
+export const MOVIECARD_IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
